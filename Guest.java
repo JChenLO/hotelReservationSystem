@@ -2,6 +2,7 @@
  * A Guest Account
  * @author Andre Mak
  */
+import java.util.Date;
 
 public class Guest extends User
 {
@@ -10,19 +11,19 @@ public class Guest extends User
         super(id, name, password);
     }
     
-    public void makeReservation(String startDate, String endDate, int id, int roomNumber)
+    public void makeReservation(Date startDate, Date endDate, int id, int roomNumber, Reservations list)
     {
         Reservation r = new Reservation(startDate, endDate, id, roomNumber);
-        //list.add(r);
+        list.add(r);
     }
     
-    public void cancelReservation(int id)
+    public void cancelReservation(Reservation r, Reservations list)
     {
-        //list.cancel(id);
+        list.cancel(r);
     }
     
-    public void viewReservation(int id)
+    public void viewReservation(int id, Reservations list)
     {
-        //list.getReservationByUser(id);
+        list.getReservationByUser(id);
     }
 }
