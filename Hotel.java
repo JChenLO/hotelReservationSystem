@@ -68,9 +68,9 @@ public class Hotel
                };
    }
 
-   public void createAccount()
+   public void createAccount(User user)
    {
-
+      users.add(user);
    }
    
    
