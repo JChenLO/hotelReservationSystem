@@ -77,12 +77,14 @@ public class StartFrame
 
                else if(managerRadio.isSelected() && user.getClass() == Manager.class)
                {
-                  new GuestFrame((Guest) user);
+                 //s new GuestFrame((Guest) user);
                }
                
                else 
-                  new JDialog(frame, "Mismatched User ID and password ");
+                  new JDialog(frame, "Wrong user type ");
             }
+            else 
+               new JDialog(frame, "Mismatched User ID and password ");
          }
       });
 
@@ -105,7 +107,7 @@ public class StartFrame
        
          public void actionPerformed(ActionEvent e)
          {
-            new SignUpFrame();            
+            new SignUpFrame(hotel);
          }
       });
       bottomPanel.add(msgLabel);
