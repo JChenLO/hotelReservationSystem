@@ -1,3 +1,6 @@
+/**
+ @author Jie Chen
+ */
 import java.util.*;
 
 public class Hotel
@@ -78,6 +81,33 @@ public class Hotel
    {
       rooms.add(r);
    }
+   
+   public User findUserByID(int id)
+   {
+      Iterator<User> it = userIterator();
+      
+      while(it.hasNext())
+         {
+            User user = it.next();
+            if(user.getID() == id)return user;
+         }
+      return null;
+   }
+   
+
+   public boolean authentification(int id, String pin)
+   {
+      Iterator<User> it = userIterator();
+      
+      while(it.hasNext())
+         {
+            User user = it.next();
+            if(user.getID() == id)return user.getPassword().equals(pin);
+         }
+      return false;
+   }
+
+   
    private ArrayList<Room> rooms;
    private ArrayList<User> users;
 }
