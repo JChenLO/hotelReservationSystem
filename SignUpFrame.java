@@ -16,8 +16,11 @@ import javax.swing.*;
  */
 public class SignUpFrame
 {
-    SignUpFrame()
+   private Hotel hotel; 
+    SignUpFrame(Hotel h)
     {
+       hotel = h;
+       
         final JFrame frame = new JFrame();
         frame.setTitle("MaGeC Hotel Sign Up");
         frame.setSize(600,200);
@@ -67,7 +70,12 @@ public class SignUpFrame
                 String pin = new String(pinField.getPassword());
                 String name = nameField.getText();
                 
-                //Hotel.createAccount(id, pin, name);
+                User user = new User(id, name, pin);
+           // call create account
+                hotel.createAccount(user);
+            //displose sign up window after submit
+                frame.dispose();
+                
             }
         });
         bottomPanel.add(submitButton);
