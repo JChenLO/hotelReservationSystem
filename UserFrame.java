@@ -9,7 +9,7 @@ public class UserFrame
     UserFrame()
     {
         final JFrame frame = new JFrame();
-        frame.setTitle("MaGeC Hotel Sign Up");
+        frame.setTitle("MaGeC Hotel User Interface");
         frame.setSize(600,150);
         
         //title
