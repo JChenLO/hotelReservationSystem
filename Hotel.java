@@ -108,6 +108,12 @@ public class Hotel
    }
 
    
+   public String getAvailableRooms(Calendar startDate, Calendar endDate, int roomType)
+   {
+      // TODO Auto-generated method stub
+      return null;
+   }
+   
    private ArrayList<Room> rooms;
    private ArrayList<User> users;
 }
