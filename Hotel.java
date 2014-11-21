@@ -8,67 +8,25 @@ public class Hotel
    public Hotel()
    {
       rooms = new ArrayList<Room>();
+      //10 economic rooms
+      for(int i = 0; i < 10; i++){
+         rooms.add(new Room(i, 80, new Reservations() ));
+      }
+      //10 luxurious rooms
+      for(int i = 10; i < 20; i++){
+         rooms.add(new Room(i, 200, new Reservations() ));
+      }
       users = new ArrayList<User>();
    }
 
    public Iterator<Room> roomIterator()
    {
-      return new Iterator<Room>()
-               {
-         private int n = 0;
-         @Override
-         public boolean hasNext()
-         {
-            // TODO Auto-generated method stub
-            return n < rooms.size();
-         }
-
-         @Override
-         public Room next()
-         {
-            // TODO Auto-generated method stub
-            if(hasNext())return rooms.get(n++);
-            else return null;
-         }
-
-         @Override
-         public void remove()
-         {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException();
-         }
-
-               };
+      return rooms.iterator();
    }
 
    public Iterator<User> userIterator()
    {
-      return new Iterator<User>()
-               {
-         int n = 0;
-         @Override
-         public boolean hasNext()
-         {
-            // TODO Auto-generated method stub
-            return n < users.size();
-         }
-
-         @Override
-         public User next()
-         {
-            // TODO Auto-generated method stub
-            if(hasNext())return users.get(n++);
-            else return null;
-         }
-
-         @Override
-         public void remove()
-         {
-            throw new UnsupportedOperationException();
-
-         }
-
-               };
+      return users.iterator();
    }
 
    public void createAccount(User user)
@@ -108,10 +66,18 @@ public class Hotel
    }
 
    
-   public String getAvailableRooms(Calendar startDate, Calendar endDate, int roomType)
+   public ArrayList<Room> getAvailableRooms(Calendar startDate, Calendar endDate, int roomType)
    {
-      // TODO Auto-generated method stub
-      return null;
+      Iterator<Room> it = roomIterator();
+      ArrayList<Room> availableRooms = new ArrayList<Room>();
+      while(it.hasNext())
+      {
+         Room room = it.next();
+         if(room.isType(roomType) && room.isAvailable(startDate, endDate)) {
+            availableRooms.add(room);
+         }
+      }
+      return availableRooms;
    }
    
    private ArrayList<Room> rooms;
