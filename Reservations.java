@@ -69,6 +69,11 @@ public class Reservations {
 	}
 		return reservesUnderSameDate.iterator();
 }
+	// add Iterator J.C
+	public Iterator<Reservation> getReservations()
+	{
+	   return reservationList.iterator();
+	}
 
 public void save()
 	 {
