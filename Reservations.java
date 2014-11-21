@@ -69,6 +69,21 @@ public class Reservations {
 	}
 		return reservesUnderSameDate.iterator();
 }
+
+public Iterator<Reservation> getIteratorByRoom(int roomNum)
+	{
+		ArrayList<Reservation> reservesUnderSameRoom = new ArrayList<Reservation>();
+		for(Reservation re : reservationList)
+		{
+			if(re.getRoomNumber()==roomNum)
+			{
+				reservesUnderSameRoom.add(re);
+			}
+		}
+		
+		return reservesUnderSameRoom.iterator();
+	}
+	
 	// add Iterator J.C
 	public Iterator<Reservation> getReservations()
 	{
