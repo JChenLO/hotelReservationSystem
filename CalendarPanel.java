@@ -42,8 +42,6 @@ public class CalendarPanel extends JPanel {
       "July", "August", "September", "October", "November", "December" };
 
   private void buildGUI() {
-    getAccessibleContext().setAccessibleDescription(
-        "Calendar not accessible yet. Sorry!");
     setBorder(BorderFactory.createEtchedBorder());
 
     setLayout(new BorderLayout());
@@ -63,8 +61,6 @@ public class CalendarPanel extends JPanel {
       }
     });
     monthChoice.getAccessibleContext().setAccessibleName("Months");
-    monthChoice.getAccessibleContext().setAccessibleDescription(
-        "Choose a month of the year");
 
     tp.add(yearChoice = new JComboBox());
     yearChoice.setEditable(true);
@@ -119,9 +115,6 @@ public class CalendarPanel extends JPanel {
   };
 
   protected void recompute() {
-    if (mm < 0 || mm > 11)
-      throw new IllegalArgumentException("Month " + mm
-          + " bad, must be 0-11");
     clearDayActive();
     calendar = new GregorianCalendar(yy, mm, dd);
     leadGap = new GregorianCalendar(yy, mm, 1).get(Calendar.DAY_OF_WEEK) - 1;
