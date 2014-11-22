@@ -1,3 +1,5 @@
+import java.util.Date;
+
 /**
  * A Manager Account
  * @author Andre Mak
@@ -9,8 +11,8 @@ public class Manager extends User
         super(id, name, password);
     }
     
-    public void checkReservation(String startDate)
+    public void checkReservation(Date startDate, Reservations r)
     {
-        //list.getReservationByDate(startDate);
+        r.getReservationByDate(startDate);
     }
 }
