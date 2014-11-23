@@ -17,9 +17,7 @@ public class Room
       reservations = list;
    }
    
-   /**
-    
-    */
+   
    public void addReservation(Reservation r)
    {
       reservations.add(r);
@@ -38,8 +36,10 @@ public class Room
          Reservation r = it.next();
          Date sDate = r.getStartDate();
          Date eDate = r.getendDate();
-         if( (sDate.after(startDate.getTime()) && sDate.before(endDate.getTime()))
-                  ||  (eDate.after(startDate.getTime()) && eDate.before(endDate.getTime())))
+         if( ((sDate.after(startDate.getTime()) || sDate.equals(startDate.getTime())) 
+                  && (sDate.before(endDate.getTime())) || sDate.equals(endDate.getTime()))
+                  ||  ((eDate.after(startDate.getTime()) || eDate.equals(startDate.getTime())) 
+                           && (eDate.before(endDate.getTime()) || eDate.equals(endDate.getTime()))))
                   {
                      return false;
                   }
@@ -48,6 +48,9 @@ public class Room
       return true;
    }
    
+   public int getCost()
+   {return cost;}
+   
    public String toString()
    {
       return "Room " + roomNumber + " Price = " + cost;
@@ -55,7 +58,5 @@ public class Room
    private int cost;
    private int roomNumber;
    private Reservations reservations;
-   private final int LUX = 200;
-   private final int ECO = 80;
    
 }
