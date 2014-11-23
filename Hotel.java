@@ -3,6 +3,9 @@
  */
 import java.util.*;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 public class Hotel
 {
    public Hotel()
@@ -33,53 +36,73 @@ public class Hotel
    {
       users.add(user);
    }
-   
-   
+
+
    public void addRoom(Room r)
    {
       rooms.add(r);
    }
-   
+
    public User findUserByID(int id)
    {
       Iterator<User> it = userIterator();
-      
+
       while(it.hasNext())
-         {
-            User user = it.next();
-            if(user.getID() == id)return user;
-         }
+      {
+         User user = it.next();
+         if(user.getID() == id)return user;
+      }
       return null;
    }
-   
+
 
    public boolean authentification(int id, String pin)
    {
       Iterator<User> it = userIterator();
-      
+
       while(it.hasNext())
-         {
-            User user = it.next();
-            if(user.getID() == id)return user.getPassword().equals(pin);
-         }
+      {
+         User user = it.next();
+         if(user.getID() == id)return user.getPassword().equals(pin);
+      }
       return false;
    }
 
-   
-   public ArrayList<Room> getAvailableRooms(Calendar startDate, Calendar endDate, int roomType)
+   //mutator
+   public void setAvailableRooms(Calendar startDate, Calendar endDate, int roomType)
    {
       Iterator<Room> it = roomIterator();
-      ArrayList<Room> availableRooms = new ArrayList<Room>();
+      availableRooms = new ArrayList<Room>();
       while(it.hasNext())
       {
          Room room = it.next();
          if(room.isType(roomType) && room.isAvailable(startDate, endDate)) {
+            // availableRooms += (room.toString() + '\n');
             availableRooms.add(room);
          }
       }
+      ChangeEvent e = new ChangeEvent(this);
+      for(ChangeListener c : listeners)
+      {
+         c.stateChanged(e);
+      }
+   }
+
+   //accessor
+   public ArrayList<Room> getAvailableRooms()
+   {
       return availableRooms;
    }
-   
+
+   public void attach(ChangeListener changeListener)
+   {
+      listeners.add(changeListener);
+   }
+
+
    private ArrayList<Room> rooms;
    private ArrayList<User> users;
+   private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
+   private ArrayList<Room> availableRooms;
+
 }
