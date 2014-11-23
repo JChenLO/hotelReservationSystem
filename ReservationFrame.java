@@ -2,19 +2,12 @@
  @author Jie Chen
  */
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Iterator;
+import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -35,6 +28,12 @@ public class ReservationFrame
    private final JPanel northPanel = new JPanel();
    private final JPanel centerPanel = new JPanel();
    private final JPanel bottomPanel = new JPanel();
+
+   private final JRadioButton luxButton = new JRadioButton("$200");
+   private final JRadioButton ecoButton = new JRadioButton("$80");
+   
+  final JList<Room> jlist = new JList<Room>();
+  
    private int total = 0;
    ReservationFrame(Hotel h, Guest g)
    {
@@ -55,9 +54,25 @@ public class ReservationFrame
 
       Calendar cal = Calendar.getInstance();
       checkinField = new JTextField(dt.format(cal.getTime()));
+      checkinField.addActionListener(new ActionListener()
+      {
+         public void actionPerformed(ActionEvent e)
+         {
+            setAvailableRooms();
+         }
+      });
+      
       cal.add(Calendar.DATE, 7); 
       checkoutField = new JTextField(dt.format(cal.getTime()));
 
+      checkoutField.addActionListener(new ActionListener()
+      {
+         public void actionPerformed(ActionEvent e)
+         {
+            setAvailableRooms();
+         }
+      });
+      
       northCenterPanel.add(checkinLabel);
       northCenterPanel.add(checkoutLabel);
       northCenterPanel.add(checkinField);
@@ -65,36 +80,30 @@ public class ReservationFrame
 
       final JPanel northSouthPanel = new JPanel();
       JLabel roomTypeLabel = new JLabel("Room Type:");
-      final JRadioButton luxButton = new JRadioButton("$200");
-      final JRadioButton ecoButton = new JRadioButton("$80");
       group = new ButtonGroup();
       group.add(luxButton);
       group.add(ecoButton);
       group.setSelected(luxButton.getModel(), true);
 
-      JButton showButton = new JButton("Show Available Rooms");
-      showButton.addActionListener(new ActionListener()
+      ecoButton.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
          {
-            try
-            {
-               inDate.setTime(dt.parse(checkinField.getText()));
-               outDate.setTime(dt.parse(checkinField.getText()));
-            } catch (ParseException e1)
-            {
-               // TODO Auto-generated catch block
-               e1.printStackTrace();
-            }
-            int roomType = luxButton.isSelected() ? 200 : 80;
-            hotel.setAvailableRooms(inDate, outDate, roomType);
+            setAvailableRooms();
+         }
+      });
+      
+      luxButton.addActionListener(new ActionListener()
+      {
+         public void actionPerformed(ActionEvent e)
+         {
+            setAvailableRooms();
          }
       });
 
       northSouthPanel.add(roomTypeLabel);
       northSouthPanel.add(luxButton);
       northSouthPanel.add(ecoButton);
-      northSouthPanel.add(showButton);
       northPanel.add(northCenterPanel, BorderLayout.CENTER);
       Border lineBorder1 = BorderFactory.createLineBorder(Color.GRAY);
       northPanel.setBorder(lineBorder1);
@@ -102,8 +111,7 @@ public class ReservationFrame
 
 
       //View
-      centerPanel.setLayout(new BorderLayout());           
-      final JList<Room> jlist = new JList<Room>();
+      centerPanel.setLayout(new BorderLayout());    
       hotel.attach(new ChangeListener(){
          public void stateChanged(ChangeEvent e){
             DefaultListModel<Room> model = new DefaultListModel<Room>();
@@ -131,11 +139,8 @@ public class ReservationFrame
          public void actionPerformed(ActionEvent e)
          {
             /*make reservations */
-            Room room = jlist.getSelectedValue();
-            Reservation r = new Reservation(inDate.getTime(), outDate.getTime(), guest.getID());
-            total += room.getCost();
-            room.addReservation(r);
-            confirmLabel.setText("made reservation on " + room.toString() + "  Your total = " + total);
+            makeReservation();
+            setAvailableRooms();
          }
       });
       JButton transactionDoneButton = new JButton("Transaction Done");
@@ -143,7 +148,8 @@ public class ReservationFrame
       {
          public void actionPerformed(ActionEvent e)
          {
-            /* done dispose frame */
+            /* output receipt*/
+            new PrintFrame();
             frame.dispose();
          }
       });
@@ -158,6 +164,49 @@ public class ReservationFrame
       frame.setVisible(true);
    }
 
+   // call Hotel.mutator 
+   private void setAvailableRooms()
+   {
+      try
+      {
+         inDate.setTime(dt.parse(checkinField.getText()));
+         outDate.setTime(dt.parse(checkoutField.getText()));
+         if(inDate.get(Calendar.DATE) < Calendar.getInstance().get(Calendar.DATE)){
+            JOptionPane.showMessageDialog(frame,
+                     "Checkin date earlier than today. Please try again", "MaGeC Hotel Message",
+                     JOptionPane.WARNING_MESSAGE); return;
+            }
+         
+        if(outDate.before(inDate)){
+           JOptionPane.showMessageDialog(frame,
+                    "Checkout date earlier than checkin date. Please try again", "MaGeC Hotel Message",
+                    JOptionPane.WARNING_MESSAGE); return;
+           }
+         inDate.add(Calendar.DATE, 60);
+         if(inDate.before(outDate)){
+            JOptionPane.showMessageDialog(frame, "Length of stay cannot be longer than 60 days","MaGeC Hotel Message", 
+                     JOptionPane.WARNING_MESSAGE); return;
+            }
+         inDate.add(Calendar.DATE, -60);
+      } catch (ParseException e1)
+      {
+         e1.printStackTrace();
+      }
+      int roomType = luxButton.isSelected() ? 200 : 80;
+      hotel.setAvailableRooms(inDate, outDate, roomType);
+   }
+
+   private void makeReservation()
+   {
+      Room room = jlist.getSelectedValue();
+      Reservation r = new Reservation(inDate.getTime(), outDate.getTime(), guest.getID());
+      total += room.getCost();
+      room.addReservation(r);
+      JOptionPane.showConfirmDialog(frame, 
+               "Reserved " + room.toString() + "  Your total = " + total + "\nMake more reservations?", "MaGeC Hotel Message", JOptionPane.OK_CANCEL_OPTION );
+
+   }
+   
 }
 
 
