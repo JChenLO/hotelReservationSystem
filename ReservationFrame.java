@@ -18,6 +18,8 @@ public class ReservationFrame
 {
    private Guest guest;
    private Hotel hotel;
+   private int transactionID;
+   
    private JTextField checkinField;
    private JTextField checkoutField;
    private ButtonGroup group;
@@ -35,11 +37,11 @@ public class ReservationFrame
   final JList<Room> jlist = new JList<Room>();
   
    private int total = 0;
-   ReservationFrame(Hotel h, Guest g)
+   ReservationFrame(Hotel h, Guest g, int transID)
    {
       hotel = h;
       guest = g;
-
+      transactionID = transID;
       frame.setTitle("MaGeC Hotel Reservation Interface");
       frame.setSize(600,600);
 
@@ -149,7 +151,7 @@ public class ReservationFrame
          public void actionPerformed(ActionEvent e)
          {
             /* output receipt*/
-            new PrintFrame();
+            new PrintFrame(hotel, guest, transactionID);
             frame.dispose();
          }
       });
@@ -160,6 +162,7 @@ public class ReservationFrame
       frame.add(northPanel, BorderLayout.NORTH);
       frame.add(centerPanel, BorderLayout.CENTER);
       frame.add(bottomPanel, BorderLayout.SOUTH);
+      setAvailableRooms();
       frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
       frame.setVisible(true);
    }
@@ -199,11 +202,11 @@ public class ReservationFrame
    private void makeReservation()
    {
       Room room = jlist.getSelectedValue();
-      Reservation r = new Reservation(inDate.getTime(), outDate.getTime(), guest.getID());
+      Reservation r = new Reservation(transactionID, inDate.getTime(), outDate.getTime(), guest.getID(), room.getRoomNumber());
       total += room.getCost();
       room.addReservation(r);
       JOptionPane.showConfirmDialog(frame, 
-               "Reserved " + room.toString() + "  Your total = " + total + "\nMake more reservations?", "MaGeC Hotel Message", JOptionPane.OK_CANCEL_OPTION );
+               "Make more reservations?", "MaGeC Hotel Message", JOptionPane.OK_CANCEL_OPTION );
 
    }
    
