@@ -17,7 +17,15 @@ public class Room
       reservations = list;
    }
    
+   public Reservations getReservations()
+   {
+      return reservations;
+   }
    
+   public int getRoomNumber()
+   {
+      return roomNumber;
+   }
    public void addReservation(Reservation r)
    {
       reservations.add(r);
@@ -53,7 +61,7 @@ public class Room
    
    public String toString()
    {
-      return "Room " + roomNumber + " Price = " + cost;
+      return "Room #" + getRoomNumber() + " Price = " + getCost();
    }
    private int cost;
    private int roomNumber;

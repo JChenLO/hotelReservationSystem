@@ -34,4 +34,9 @@ public class User
     {
         return this.id == id && this.password.equals(password);
     }
+    
+    public String toString()
+    {
+       return "Id: " + getID() + " Name: " + getName();
+    }
 }
