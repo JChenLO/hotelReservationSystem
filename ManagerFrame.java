@@ -10,6 +10,9 @@ import javax.swing.*;
  */
 public class ManagerFrame
 {
+    // Lihao Ge
+	private Reservations reservationList;
+	
     ManagerFrame()
     {
         final JFrame frame = new JFrame();
@@ -46,9 +49,41 @@ public class ManagerFrame
         JButton loadButton = new JButton("Load");
         loadButton.addActionListener(new ActionListener()
         {
+            //Lihao Ge
             public void actionPerformed(ActionEvent e)
             {
-                
+                String fileName="reservations.txt";
+            	File file=new File(fileName);
+            	BufferedReader br = null;
+            	Date start = new Date();
+            	Date end = new Date();
+            	int id = 0;
+            	int roomnum = 0;
+    			DateFormat df = new SimpleDateFormat("yyyyMMdd");
+    			try {
+    				   br=new BufferedReader(new FileReader(file));
+    				  } catch (FileNotFoundException ev) {
+    				   ev.printStackTrace();
+    				  }
+    			  StringBuffer sb=new StringBuffer();
+    			  String line=null;
+    			  String[] rec=null;
+    			  
+    			  try {
+    				   while((line=br.readLine())!=null){
+    				    rec=line.split(";");
+    				    start=df.parse(rec[0]);
+    				    end = df.parse(rec[1]);
+    				    id =Integer.parseInt(rec[2]);
+    				    roomnum =Integer.parseInt(rec[3]);
+    				    reservationList.add(new Reservation(start,end,id,roomnum));
+    		}
+    			  
+    		  } catch (ParseException e1) {
+    		   e1.printStackTrace();
+    		  } catch (IOException e1) {
+				e1.printStackTrace();
+			}
             }
         });
         JButton saveAndQuitButton = new JButton("Save and Quit");
@@ -56,7 +91,9 @@ public class ManagerFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-                
+               //Lihao Ge
+               reservationList.save();
+            	System.exit(0);
             }
         });
         bottomPanel.add(viewButton);
