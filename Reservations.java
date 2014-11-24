@@ -104,17 +104,16 @@ public void save()
 
 				FileWriter fw = new FileWriter(file.getAbsoluteFile());
 				BufferedWriter bw = new BufferedWriter(fw);
+				DateFormat df = new SimpleDateFormat("yyyyMMdd");
 				for (Reservation r: reservationList)
 				{
-					bw.write(r.getStartDate()+";");
-					bw.write(r.getendDate()+";");
+					bw.write(df.format(r.getStartDate())+";");
+					bw.write(df.format(r.getendDate())+";");
 					bw.write(r.getID()+";");
-                    bw.write(r.getRoomNumber()+"/r/n");
+                                        bw.write(r.getRoomNumber()+"/r/n");
 
 				}
 				bw.close();
-
-				System.out.println("Done");
 
 			} catch (IOException e) {
 				e.printStackTrace();
