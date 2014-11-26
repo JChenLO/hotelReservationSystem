@@ -19,7 +19,7 @@ public class ReservationFrame
    private Guest guest;
    private Hotel hotel;
    private int transactionID;
-   
+
    private JTextField checkinField;
    private JTextField checkoutField;
    private ButtonGroup group;
@@ -33,9 +33,9 @@ public class ReservationFrame
 
    private final JRadioButton luxButton = new JRadioButton("$200");
    private final JRadioButton ecoButton = new JRadioButton("$80");
-   
-  final JList<Room> jlist = new JList<Room>();
-  
+
+   final JList<Room> jlist = new JList<Room>();
+
    private int total = 0;
    ReservationFrame(Hotel h, Guest g, int transID)
    {
@@ -63,7 +63,7 @@ public class ReservationFrame
             setAvailableRooms();
          }
       });
-      
+
       cal.add(Calendar.DATE, 7); 
       checkoutField = new JTextField(dt.format(cal.getTime()));
 
@@ -74,7 +74,7 @@ public class ReservationFrame
             setAvailableRooms();
          }
       });
-      
+
       northCenterPanel.add(checkinLabel);
       northCenterPanel.add(checkoutLabel);
       northCenterPanel.add(checkinField);
@@ -94,7 +94,7 @@ public class ReservationFrame
             setAvailableRooms();
          }
       });
-      
+
       luxButton.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
@@ -116,11 +116,15 @@ public class ReservationFrame
       centerPanel.setLayout(new BorderLayout());    
       hotel.attach(new ChangeListener(){
          public void stateChanged(ChangeEvent e){
+            
             DefaultListModel<Room> model = new DefaultListModel<Room>();
-            ArrayList<Room> rooms = hotel.getAvailableRooms();
-            for(Room r : rooms){
-               model.addElement(r);
+            ArrayList<Room> rooms;
+            if(isValidDate()){
+                rooms = hotel.getAvailableRooms();
+                for(Room r : rooms)
+                {model.addElement(r);}
             }
+            
             //notify method
             jlist.setModel(model);
             if(model.size() > 0)jlist.setSelectedIndex(0);
@@ -170,35 +174,54 @@ public class ReservationFrame
    // call Hotel.mutator 
    private void setAvailableRooms()
    {
+      if(!isValidDate())return;
+      int roomType = luxButton.isSelected() ? 200 : 80;
+      hotel.setAvailableRooms(inDate, outDate, roomType);
+      
+   }
+
+   private boolean isValidDate()
+   {
+      dt.setLenient(false);
       try
       {
          inDate.setTime(dt.parse(checkinField.getText()));
-         outDate.setTime(dt.parse(checkoutField.getText()));
-         if(inDate.get(Calendar.DATE) < Calendar.getInstance().get(Calendar.DATE)){
-            JOptionPane.showMessageDialog(frame,
-                     "Checkin date earlier than today. Please try again", "MaGeC Hotel Message",
-                     JOptionPane.WARNING_MESSAGE); return;
-            }
-         
-        if(outDate.before(inDate)){
-           JOptionPane.showMessageDialog(frame,
-                    "Checkout date earlier than checkin date. Please try again", "MaGeC Hotel Message",
-                    JOptionPane.WARNING_MESSAGE); return;
-           }
-         inDate.add(Calendar.DATE, 60);
-         if(inDate.before(outDate)){
-            JOptionPane.showMessageDialog(frame, "Length of stay cannot be longer than 60 days","MaGeC Hotel Message", 
-                     JOptionPane.WARNING_MESSAGE); return;
-            }
-         inDate.add(Calendar.DATE, -60);
+
       } catch (ParseException e1)
       {
-         e1.printStackTrace();
+         JOptionPane.showMessageDialog(frame, "Invalid checkin date", "MaGeC Hotel Message",
+                  JOptionPane.WARNING_MESSAGE); return false;
       }
-      int roomType = luxButton.isSelected() ? 200 : 80;
-      hotel.setAvailableRooms(inDate, outDate, roomType);
-   }
 
+      try
+      {
+
+         outDate.setTime(dt.parse(checkoutField.getText()));
+
+      } catch (ParseException e1)
+      {
+         JOptionPane.showMessageDialog(frame, "Invalid checkout date", "MaGeC Hotel Message",
+                  JOptionPane.WARNING_MESSAGE); return false;
+      }
+      if(inDate.get(Calendar.DATE) < Calendar.getInstance().get(Calendar.DATE)){
+         JOptionPane.showMessageDialog(frame,
+                  "Checkin date earlier than today. Please try again", "MaGeC Hotel Message",
+                  JOptionPane.WARNING_MESSAGE); return false;
+      }
+
+      if(outDate.before(inDate)){
+         JOptionPane.showMessageDialog(frame,
+                  "Checkout date earlier than checkin date. Please try again", "MaGeC Hotel Message",
+                  JOptionPane.WARNING_MESSAGE); return false;
+      }
+      inDate.add(Calendar.DATE, 60);
+      if(inDate.before(outDate)){
+         JOptionPane.showMessageDialog(frame, "Length of stay cannot be longer than 60 days","MaGeC Hotel Message", 
+                  JOptionPane.WARNING_MESSAGE); return false;
+      }
+      inDate.add(Calendar.DATE, -60);
+      return true;
+   }
    private void makeReservation()
    {
       Room room = jlist.getSelectedValue();
@@ -209,7 +232,7 @@ public class ReservationFrame
                "Make more reservations?", "MaGeC Hotel Message", JOptionPane.OK_CANCEL_OPTION );
 
    }
-   
+
 }
 
 

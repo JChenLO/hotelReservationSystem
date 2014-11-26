@@ -38,7 +38,6 @@ public class PrintFrame
         
         //input new user information
         JPanel centerPanel = new JPanel();
-        
         JRadioButton simpleButton = new JRadioButton("Print Simple Receipt");
         JRadioButton comprehensiveButton = new JRadioButton("Print Comprehensive Receipt");
         
@@ -56,10 +55,18 @@ public class PrintFrame
         //submit button
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(centerPanel, BorderLayout.NORTH);
         final JTextArea textArea = new JTextArea();
         bottomPanel.add(textArea, BorderLayout.CENTER);
         
-
+        JButton closeButton = new JButton("close");
+        bottomPanel.add(closeButton, BorderLayout.SOUTH);
+        closeButton.addActionListener(new ActionListener(){
+           public void actionPerformed(ActionEvent e)
+           {
+              frame.dispose();
+           }
+        });
         simpleButton.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -80,8 +87,7 @@ public class PrintFrame
 
         //finished frame
         frame.add(northPanel, BorderLayout.NORTH);
-        frame.add(centerPanel, BorderLayout.CENTER);
-        frame.add(bottomPanel, BorderLayout.SOUTH);
+        frame.add(bottomPanel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setVisible(true);
    }

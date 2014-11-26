@@ -4,6 +4,8 @@
  */
 import java.util.Date;
 
+import javax.swing.JList;
+
 public class Guest extends User
 {
     public Guest(int id, String name, String password)
