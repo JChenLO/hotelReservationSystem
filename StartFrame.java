@@ -1,3 +1,7 @@
+/**
+ @author Jie Chen
+ */
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
@@ -72,14 +76,13 @@ public class StartFrame
                User user = hotel.findUserByID(id);
                assert(user.getClass() == Guest.class);
                if(guestRadio.isSelected() && user.getClass() == Guest.class) {
-                  new GuestFrame((Guest) user);
+                  new UserFrame(hotel, (Guest) user);
                }
 
                else if(managerRadio.isSelected() && user.getClass() == Manager.class)
                {
-                 //s new GuestFrame((Guest) user);
+                 new ManagerFrame();
                }
-               
                else 
                   new JDialog(frame, "Wrong user type ");
             }

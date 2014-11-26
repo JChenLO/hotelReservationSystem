@@ -31,6 +31,11 @@ public class Room
       reservations.add(r);
    }
    
+   public void cancelReservation(Reservation r)
+   {
+      reservations.cancel(r);
+   }
+   
    public boolean isType(int type)
    {
       return cost == type;

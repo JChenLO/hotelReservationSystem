@@ -70,9 +70,9 @@ public class SignUpFrame
                 String pin = new String(pinField.getPassword());
                 String name = nameField.getText();
                 
-                User user = new User(id, name, pin);
+                Guest guest = new Guest(id, name, pin);
            // call create account
-                hotel.createAccount(user);
+                hotel.createAccount(guest);
             //displose sign up window after submit
                 frame.dispose();
                 

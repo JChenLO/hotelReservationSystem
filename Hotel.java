@@ -3,6 +3,7 @@
  */
 import java.util.*;
 
+import javax.swing.JList;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -50,7 +51,9 @@ public class Hotel
       while(it.hasNext())
       {
          User user = it.next();
-         if(user.getID() == id)return user;
+         if(user.getID() == id){
+            return user;
+         }
       }
       return null;
    }
@@ -99,10 +102,39 @@ public class Hotel
       listeners.add(changeListener);
    }
 
+   public void cancelReservation(Reservation r)
+   {
+      Iterator<Room> it = roomIterator();
+      while(it.hasNext())
+      {
+         Room room = it.next();
+         if(room.getRoomNumber() == r.getRoomNumber()) {
+            room.cancelReservation(r); return;
+         }
+      }
+   }
+   
+   public ArrayList<Reservation> getReservations(Guest guest)
+   {
+      Iterator<Room> it = roomIterator();
+      ArrayList<Reservation> rlist = new ArrayList<Reservation>();
+      while(it.hasNext())
+      {
+         Room room = it.next();
+         
+         Reservations rs = room.getReservations();
+         Iterator<Reservation> it1 = rs.getReservationByUser(guest.getID());
+         while(it1.hasNext())rlist.add(it1.next());
+         
+      }
+      return rlist;
+   }
 
    private ArrayList<Room> rooms;
    private ArrayList<User> users;
    private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
    private ArrayList<Room> availableRooms;
+
+
 
 }
