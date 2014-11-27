@@ -109,6 +109,10 @@ public class ManagerFrame extends JFrame
          public void actionPerformed(ActionEvent e)
          {
             //Lihao Ge
+            if (reservationList == null)
+             {
+                 System.exit(0);
+             }
             reservationList.save();
             System.exit(0);
          }
