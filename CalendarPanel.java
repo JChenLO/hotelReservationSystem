@@ -20,6 +20,9 @@ public class CalendarPanel extends JPanel {
   private JButton b0;
   private JComboBox monthChoice;
   private JComboBox yearChoice;
+  //Lihao Ge
+  private Reservations reserveList;
+  private ArrayList<Reservation> selectDateReservation2;
 
   CalendarPanel() {
     super();
@@ -28,7 +31,18 @@ public class CalendarPanel extends JPanel {
     buildGUI();
     recompute();
   }
-
+//Lihao Ge
+  CalendarPanel(Reservations rlist) {
+    super();
+    setYYMMDD(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH));
+    buildGUI();
+    recompute();
+     reserveList = rlist;
+     selectDateReservation2 = reserveList.getReservationByDate2(GregorianCalendar.getInstance().getTime());
+  }
+  
+  
   CalendarPanel(int year, int month, int today) {
     super();
     setYYMMDD(year, month, today);
@@ -102,6 +116,13 @@ public class CalendarPanel extends JPanel {
         String num = e.getActionCommand();
         if (!num.equals("")) {
           setDayActive(Integer.parseInt(num));
+          //Lihao Ge
+          Date d = null;
+          Calendar cal = GregorianCalendar.getInstance();
+          cal.set(yy, mm, i);
+          d = cal.getTime();
+          selectDateReservation2 = reserveList.getReservationByDate2(d);
+
         }
       }
     };
@@ -114,7 +135,11 @@ public class CalendarPanel extends JPanel {
 
    add(BorderLayout.SOUTH, bp);
   }
-
+  //Lihao Ge
+  public ArrayList<Reservation> getSelectedDateReservation2(){
+	  return selectDateReservation2;
+  }
+  
   public final static int dom[] = { 31, 28, 31, 30,
   31, 30, 31, 31,
   30, 31, 30, 31
