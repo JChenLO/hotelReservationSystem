@@ -43,7 +43,7 @@ public class ReservationFrame
       guest = g;
       transactionID = transID;
       frame.setTitle("MaGeC Hotel Reservation Interface");
-      frame.setSize(600,600);
+      frame.setSize(600,400);
 
       //Checkin checkout date
       northPanel.setLayout(new BorderLayout());
@@ -225,7 +225,7 @@ public class ReservationFrame
    private void makeReservation()
    {
       Room room = jlist.getSelectedValue();
-      Reservation r = new Reservation(transactionID, inDate.getTime(), outDate.getTime(), guest.getID(), room.getRoomNumber());
+      Reservation r = new Reservation(transactionID, inDate.getTime(), outDate.getTime(), guest.getID(), room);
       total += room.getCost();
       room.addReservation(r);
       JOptionPane.showConfirmDialog(frame, 

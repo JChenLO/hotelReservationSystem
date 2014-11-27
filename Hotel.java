@@ -130,6 +130,21 @@ public class Hotel
       return rlist;
    }
 
+   public ArrayList<Reservation> getReservations(Date d)
+   {
+      Iterator<Room> it = roomIterator();
+      ArrayList<Reservation> rlist = new ArrayList<Reservation>();
+      while(it.hasNext())
+      {
+         Room room = it.next();        
+         Reservations rs = room.getReservations();
+         Iterator<Reservation> it1 = rs.getReservationByDate(d);
+         while(it1.hasNext())rlist.add(it1.next());       
+      }
+      return rlist;
+   }
+   
+   public ArrayList<Room> getRooms(){return rooms;}
    private ArrayList<Room> rooms;
    private ArrayList<User> users;
    private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();

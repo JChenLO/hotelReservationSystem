@@ -71,7 +71,7 @@ public class UserFrame
         frame.add(northPanel, BorderLayout.NORTH);
         //frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.CENTER);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //debate on exit
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE); //debate on exit
         frame.setVisible(true);
     }
 }

@@ -1,9 +1,13 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class CalendarPanel extends JPanel {
   protected int yy;
@@ -81,6 +85,8 @@ public class CalendarPanel extends JPanel {
 
     JPanel bp = new JPanel();
     bp.setLayout(new GridLayout(7, 7));
+    
+    
     labs = new JButton[6][7];
 
     bp.add(b0 = new JButton("S"));
@@ -90,7 +96,7 @@ public class CalendarPanel extends JPanel {
     bp.add(new JButton("R"));
     bp.add(new JButton("F"));
     bp.add(new JButton("S"));
-
+    
     ActionListener dateSetter = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         String num = e.getActionCommand();
@@ -106,7 +112,7 @@ public class CalendarPanel extends JPanel {
         labs[i][j].addActionListener(dateSetter);
       }
 
-    add(BorderLayout.SOUTH, bp);
+   add(BorderLayout.SOUTH, bp);
   }
 
   public final static int dom[] = { 31, 28, 31, 30,
@@ -176,5 +182,18 @@ public class CalendarPanel extends JPanel {
     square.setBackground(Color.red);
     square.repaint();
     activeDay = newDay;
+  }
+  
+  //Jie Chen
+  public int getYY(){
+     return yy;  
+  }
+  public int getMM()
+  {
+     return mm;
+  }
+  public int getDD()
+  {
+     return dd;
   }
 }

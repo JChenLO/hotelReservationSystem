@@ -15,10 +15,15 @@ import java.awt.event.*;
 public class StartFrame
 {
    private Hotel hotel;
+   private  JRadioButton guestRadio = new JRadioButton("Guest");
+   private  JRadioButton managerRadio = new JRadioButton("Manager");
+   private  JTextField userIDField = new JTextField("1234");
+   private  JPasswordField pinField = new JPasswordField("1234");
+   final JFrame frame = new JFrame();
+   
    StartFrame(Hotel h)
    {
       hotel = h;
-      final JFrame frame = new JFrame();
 
       frame.setTitle("MaGeC Hotel Reservation System");
       frame.setSize(600,250);
@@ -36,8 +41,6 @@ public class StartFrame
       Border lineBorder1 = BorderFactory.createLineBorder(Color.GRAY);
       centerPanel.setBorder(lineBorder1);
 
-      final JRadioButton guestRadio = new JRadioButton("Guest");
-      final JRadioButton managerRadio = new JRadioButton("Manager");
       final ButtonGroup group = new ButtonGroup();
       group.add(guestRadio);
       group.add(managerRadio);
@@ -54,9 +57,13 @@ public class StartFrame
 
       JLabel idLabel = new JLabel("User ID");
       JLabel pinLabel = new JLabel("Password");
-      final JTextField userIDField = new JTextField("1234");
-      final JPasswordField pinField = new JPasswordField("1234");
       pinField.setColumns(8);
+      pinField.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e)
+         {
+            login();
+         }
+      });
       centerMiddlePanel1.add(idLabel);
       centerMiddlePanel1.add(userIDField);
 
@@ -69,25 +76,7 @@ public class StartFrame
       {
          public void actionPerformed(ActionEvent e)
          {
-            int id = Integer.parseInt(userIDField.getText());
-            String pin = new String(pinField.getPassword());
-            if(hotel.authentification(id,pin )) 
-            {
-               User user = hotel.findUserByID(id);
-               assert(user.getClass() == Guest.class);
-               if(guestRadio.isSelected() && user.getClass() == Guest.class) {
-                  new UserFrame(hotel, (Guest) user);
-               }
-
-               else if(managerRadio.isSelected() && user.getClass() == Manager.class)
-               {
-                 new ManagerFrame();
-               }
-               else 
-                  new JDialog(frame, "Wrong user type ");
-            }
-            else 
-               new JDialog(frame, "Mismatched User ID and password ");
+           login();
          }
       });
 
@@ -126,5 +115,27 @@ public class StartFrame
       frame.setVisible(true);
    }
 
+   private void login()
+   {
+      int id = Integer.parseInt(userIDField.getText());
+      String pin = new String(pinField.getPassword());
+      if(hotel.authentification(id,pin )) 
+      {
+         User user = hotel.findUserByID(id);
+         assert(user.getClass() == Guest.class);
+         if(guestRadio.isSelected() && user.getClass() == Guest.class) {
+            new UserFrame(hotel, (Guest) user);
+         }
+
+         else if(managerRadio.isSelected() && user.getClass() == Manager.class)
+         {
+           new ManagerFrame(hotel);
+         }
+         else 
+            new JDialog(frame, "Wrong user type ");
+      }
+      else 
+         new JDialog(frame, "Mismatched User ID and password ");
+   }
 
 }

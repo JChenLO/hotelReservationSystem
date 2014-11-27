@@ -60,14 +60,12 @@ public class Reservations {
 	
 	public Iterator<Reservation> getReservationByDate(Date date)
 	{
-		ArrayList<Reservation> reservesUnderSameDate = reservationList;
+		ArrayList<Reservation> reservesUnderSameDate = new ArrayList<Reservation>();
+
 		for(Reservation re : reservationList)
 		{
-           if(re.getStartDate().after(date)||date.after(re.getendDate()))
-           {
-        	// iterate the reservation list, remove reservations that didn't contain this date 
-        	   reservesUnderSameDate.remove(re);
-           }
+           if(date.before(re.getStartDate()) || date.after(re.getendDate())) continue;
+           reservesUnderSameDate.add(re);
 	}
 		return reservesUnderSameDate.iterator();
 }
