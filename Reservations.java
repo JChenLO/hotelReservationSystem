@@ -70,6 +70,21 @@ public class Reservations {
 		return reservesUnderSameDate.iterator();
 }
 
+//Lihao Ge
+	
+	public ArrayList<Reservation> getReservationByDate2(Date date)
+	{
+		ArrayList<Reservation> reservesUnderSameDate = new ArrayList<Reservation>(reservationList);
+		for(int i=reservationList.size()-1;i>=0;i--)
+		{
+			if(reservationList.get(i).getStartDate().after(date)||date.after(reservationList.get(i).getendDate()))
+			{
+				reservesUnderSameDate.remove(i);
+			}
+		}
+		return reservesUnderSameDate;
+	}
+	
 public Iterator<Reservation> getIteratorByRoom(int roomNum)
 	{
 		ArrayList<Reservation> reservesUnderSameRoom = new ArrayList<Reservation>();
@@ -110,7 +125,7 @@ public void save()
 					bw.write(df.format(r.getStartDate())+";");
 					bw.write(df.format(r.getendDate())+";");
 					bw.write(r.getID()+";");
-                                        bw.write(r.getRoomNumber()+"/r/n");
+                                        bw.write(r.getRoomNumber()+"\r\n");
 
 				}
 				bw.close();
