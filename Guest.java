@@ -13,9 +13,9 @@ public class Guest extends User
         super(id, name, password);
     }
     
-    public void makeReservation(Date startDate, Date endDate, int id, int roomNumber, Reservations list)
+    public void makeReservation(Date startDate, Date endDate, int id, Reservations list)
     {
-        Reservation r = new Reservation(startDate, endDate, id, roomNumber);
+        Reservation r = new Reservation(startDate, endDate, id);
         list.add(r);
     }
     

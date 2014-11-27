@@ -145,6 +145,7 @@ public class ReservationFrame
          public void actionPerformed(ActionEvent e)
          {
             /*make reservations */
+            
             makeReservation();
             setAvailableRooms();
          }
@@ -224,6 +225,7 @@ public class ReservationFrame
    }
    private void makeReservation()
    {
+      if(!isValidDate())return;
       Room room = jlist.getSelectedValue();
       Reservation r = new Reservation(transactionID, inDate.getTime(), outDate.getTime(), guest.getID(), room);
       total += room.getCost();

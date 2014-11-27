@@ -1,13 +1,12 @@
 /**
  @author Jie Chen
  */
+import java.io.*;
 import java.util.*;
 
-import javax.swing.JList;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.*;
 
-public class Hotel
+public class Hotel implements Serializable
 {
    public Hotel()
    {
@@ -33,7 +32,7 @@ public class Hotel
       return users.iterator();
    }
 
-   public void createAccount(User user)
+   public void addUser(User user)
    {
       users.add(user);
    }
@@ -144,12 +143,20 @@ public class Hotel
       return rlist;
    }
    
-   public ArrayList<Room> getRooms(){return rooms;}
+   public ArrayList<Room> getRooms()
+   {
+      return rooms;
+   }
+   
+   private void readObject(ObjectInputStream in) throws ClassNotFoundException, IOException
+   {
+      in.defaultReadObject();
+      listeners = new ArrayList<ChangeListener>();
+   }
+
    private ArrayList<Room> rooms;
    private ArrayList<User> users;
-   private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
+   private transient ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
    private ArrayList<Room> availableRooms;
-
-
-
+   
 }

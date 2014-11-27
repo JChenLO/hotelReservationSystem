@@ -1,8 +1,10 @@
+import java.io.Serializable;
+
 /**
  * A User Account
  * @author Andre Mak
  */
-public class User
+public class User implements Serializable
 {
     private int id;
     private String name;

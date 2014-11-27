@@ -2,13 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.text.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.*;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -17,13 +14,10 @@ import javax.swing.text.DefaultCaret;
  */
 public class ManagerFrame extends JFrame
 {
-   // Lihao Ge
-   private Reservations reservationList;
    //Jie Chen
    private Hotel hotel;       
    //display calendar
    private final CalendarPanelJC westPanel;
-
    private JTextArea textArea = new JTextArea();
 
    private JScrollPane scrollPane = new JScrollPane(textArea); 
@@ -69,37 +63,26 @@ public class ManagerFrame extends JFrame
          //Lihao Ge
          public void actionPerformed(ActionEvent e)
          {
-            String fileName="reservations.txt";
-            File file=new File(fileName);
-            BufferedReader br = null;
-            Date start = new Date();
-            Date end = new Date();
-            int id = 0;
-            int roomnum = 0;
-            DateFormat df = new SimpleDateFormat("yyyyMMdd");
-            try {
-               br=new BufferedReader(new FileReader(file));
-            } catch (FileNotFoundException ev) {
-               ev.printStackTrace();
-            }
-            StringBuffer sb=new StringBuffer();
-            String line=null;
-            String[] rec=null;
-
-            try {
-               while((line=br.readLine())!=null){
-                  rec=line.split(";");
-                  start=df.parse(rec[0]);
-                  end = df.parse(rec[1]);
-                  id =Integer.parseInt(rec[2]);
-                  roomnum =Integer.parseInt(rec[3]);
-                  reservationList.add(new Reservation(start,end,id,roomnum));
+            //Jie Chen
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            int result = fileChooser.showOpenDialog(ManagerFrame.this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                ObjectInputStream in = null;
+                try
+               {
+                  in = new ObjectInputStream(new FileInputStream(selectedFile));
+                  hotel = (Hotel) in.readObject();
+                  in.close();
+               } catch (IOException exception)
+               {
+                  JOptionPane.showMessageDialog(null, exception + "io");
                }
-
-            } catch (ParseException e1) {
-               e1.printStackTrace();
-            } catch (IOException e1) {
-               e1.printStackTrace();
+                 catch (ClassNotFoundException exception)
+               {
+                    JOptionPane.showMessageDialog(null, exception + "class");
+               }
             }
          }
       });
@@ -108,11 +91,27 @@ public class ManagerFrame extends JFrame
       {
          public void actionPerformed(ActionEvent e)
          {
-            //Lihao Ge
-            reservationList.save();
-            System.exit(0);
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            
+            if(fileChooser.showSaveDialog(ManagerFrame.this) == JFileChooser.APPROVE_OPTION)
+            {
+                try
+            {
+               File file = fileChooser.getSelectedFile();
+               ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+               out.writeObject(hotel);
+               out.close();
+               System.exit(0);
+            }
+                catch (IOException exception)
+            {
+              JOptionPane.showMessageDialog(null, exception + "io exception");
+            }
+            
          }
-      });
+            }}
+      );
 
       bottomPanel.add(loadButton);
       bottomPanel.add(saveAndQuitButton);

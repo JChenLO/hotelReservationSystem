@@ -1,12 +1,13 @@
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Reservation {
+public class Reservation implements Serializable
+{
  private Date startDate;
  private Date endDate;
  private int id;
- private int roomNumber;
  private Room room;
  //add transaction id
  private int transactionID;
@@ -23,13 +24,11 @@ public class Reservation {
     room = r;   
  }
  
- public Reservation(Date startDate, Date endDate, int id, int roomNumber)
+ public Reservation(Date startDate, Date endDate, int id)
  {
 	 this.startDate = startDate;
 	 this.endDate = endDate;
 	 this.id = id;
-	 this.roomNumber = roomNumber;
-			 
  }
  
  public int getTransactionID()

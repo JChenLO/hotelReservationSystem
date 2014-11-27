@@ -1,9 +1,10 @@
 /**
  @author Jie Chen
  */
+import java.io.Serializable;
 import java.util.*;
 
-public class Room
+public class Room implements Serializable
 {
    public Room(int n, int c, Reservations r)
    {

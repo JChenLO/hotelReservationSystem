@@ -72,7 +72,7 @@ public class SignUpFrame
                 
                 Guest guest = new Guest(id, name, pin);
            // call create account
-                hotel.createAccount(guest);
+                hotel.addUser(guest);
             //displose sign up window after submit
                 frame.dispose();
                 

@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class StartFrame
+public class StartFrame extends JFrame
 {
    private Hotel hotel;
    private  JRadioButton guestRadio = new JRadioButton("Guest");

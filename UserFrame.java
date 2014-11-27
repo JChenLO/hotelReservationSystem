@@ -26,10 +26,7 @@ public class UserFrame
         JLabel label = new JLabel("Welcome to MaGeC hotel: " + guest.getName());
   //     northPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         label.setFont(new Font("Serif", Font.PLAIN, 18));
-        northPanel.add(label);
-        
-        //display
-        JPanel centerPanel = new JPanel();
+        northPanel.add(label);   
         
         //buttons
         JPanel bottomPanel = new JPanel();
