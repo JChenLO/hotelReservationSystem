@@ -40,7 +40,7 @@ public class UserFrame
 
                transactionID = rand.nextInt();
                new ReservationFrame(hotel, guest,transactionID);
-                /*With “Make a Reservation” option, the guest should be able to select the check in date, check out 
+                /*Make a Reservation� the guest should be able to select the check in date, check out 
                 date, and the type of room. The start or end date/time should not be prior to the current date.
                 The length of stay cannot be longer than 60 nights. Your system enforces these constraints and 
                 generates an error for any violation. */
@@ -55,7 +55,7 @@ public class UserFrame
             public void actionPerformed(ActionEvent e)
             {
                new ViewCancelReservationFrame(hotel, guest);
-                /* With“View/Cancel a reservation”option, the system displays all reservations made by this guest.
+                /* View/Cancel a reservation� the system displays all reservations made by this guest.
                 (When the guest asks for the view/cancel, he/she already logged in and thus the system does not 
                 have to ask the id.) The guest may just view the reservations or select and cancel reservations. */
                 
