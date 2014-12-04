@@ -190,6 +190,7 @@ public class ReservationFrame
    private boolean isValidDate()
    {
       dt.setLenient(false);
+      
       try
       {
          inDate.setTime(dt.parse(checkinField.getText()));
@@ -210,7 +211,11 @@ public class ReservationFrame
          JOptionPane.showMessageDialog(frame, "Invalid checkout date", "MaGeC Hotel Message",
                   JOptionPane.WARNING_MESSAGE); return false;
       }
-      if(inDate.get(Calendar.DATE) < Calendar.getInstance().get(Calendar.DATE)){
+      
+      Calendar today = Calendar.getInstance();
+      if(inDate.get(Calendar.YEAR) < today.get(Calendar.YEAR) ||
+               inDate.get(Calendar.MONTH) < today.get(Calendar.MONTH) || 
+                        inDate.get(Calendar.DATE) < today.get(Calendar.DATE)){
          JOptionPane.showMessageDialog(frame,
                   "Checkin date earlier than today. Please try again", "MaGeC Hotel Message",
                   JOptionPane.WARNING_MESSAGE); return false;
