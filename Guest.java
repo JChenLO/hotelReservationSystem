@@ -4,8 +4,9 @@
  */
 import java.util.Date;
 
-import javax.swing.JList;
-
+/**
+ Guest class contains methods for guest 
+ */
 public class Guest extends User
 {
     public Guest(int id, String name, String password)

@@ -11,6 +11,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 
+/**
+ Reservations class, with methods related to a list of reservations
+ */
 public class Reservations implements Serializable
 {
 
@@ -86,12 +89,17 @@ public class Reservations implements Serializable
       return reservesUnderSameRoom.iterator();
    }
 
-   // add Iterator J.C
+   /**
+    returns Iterator for all reservations 
+    */ 
    public Iterator<Reservation> getReservations()
    {
       return reservationList.iterator();
    }
 
+   /*
+    deprecated
+    */
    public void save()
    {
       try {

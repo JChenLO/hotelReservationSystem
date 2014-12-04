@@ -2,7 +2,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+/**
+ Reservation class contains all methods related to reservation
+ */
 public class Reservation implements Serializable
 {
  private Date startDate;

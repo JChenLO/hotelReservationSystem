@@ -4,6 +4,9 @@
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ Room class contains methods related to hotel room
+ */
 public class Room implements Serializable
 {
    public Room(int n, int c, Reservations r)

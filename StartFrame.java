@@ -10,8 +10,14 @@ import javax.swing.border.Border;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
-
+/**
+ GUI show upon start up the hotel reservation system
+ */
 public class StartFrame extends JFrame
 {
    private Hotel hotel;
@@ -20,11 +26,12 @@ public class StartFrame extends JFrame
    private  JTextField userIDField = new JTextField("1234");
    private  JPasswordField pinField = new JPasswordField("1234");
    final JFrame frame = new JFrame();
-   
+
    StartFrame(Hotel h)
    {
+      
       hotel = h;
-
+      load();
       frame.setTitle("MaGeC Hotel Reservation System");
       frame.setSize(600,250);
 
@@ -76,7 +83,7 @@ public class StartFrame extends JFrame
       {
          public void actionPerformed(ActionEvent e)
          {
-           login();
+            login();
          }
       });
 
@@ -93,10 +100,10 @@ public class StartFrame extends JFrame
       JPanel bottomPanel = new JPanel();    
       JLabel msgLabel = new JLabel("New User? Click to sign up");
       JButton signupButton = new JButton("Sign Up");
-      
+
       signupButton.addActionListener(new ActionListener()
       {
-       
+
          public void actionPerformed(ActionEvent e)
          {
             new SignUpFrame(hotel);
@@ -129,13 +136,36 @@ public class StartFrame extends JFrame
 
          else if(managerRadio.isSelected() && user.getClass() == Manager.class)
          {
-           new ManagerFrame(hotel);
+            new ManagerFrame(hotel);
          }
          else 
-            new JDialog(frame, "Wrong user type ");
+            JOptionPane.showMessageDialog(frame, "invalid username or password", "MaGeC Hotel Message",
+                     JOptionPane.WARNING_MESSAGE);
       }
       else 
-         new JDialog(frame, "Mismatched User ID and password ");
+         JOptionPane.showMessageDialog(frame, "invalid username or password", "MaGeC Hotel Message",
+                  JOptionPane.WARNING_MESSAGE);
    }
 
+   // load if file exists
+   private void load()
+   {
+      // load reservation.txt if it exists
+      File file = new File("./Reservation.txt");
+
+      ObjectInputStream in = null;
+      try
+      {
+         in = new ObjectInputStream(new FileInputStream(file));
+         hotel = (Hotel) in.readObject();
+         in.close();
+      } catch (IOException exception)
+      {
+         JOptionPane.showMessageDialog(null, exception);
+      }
+      catch (ClassNotFoundException exception)
+      {
+         JOptionPane.showMessageDialog(null, exception);
+      }
+   }
 }

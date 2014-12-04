@@ -12,21 +12,27 @@ import javax.swing.text.DefaultCaret;
  *
  * @author Andre
  */
+
+/**
+
+ Gui for manager
+
+ */
 public class ManagerFrame extends JFrame
 {
-   //Jie Chen
-   private Hotel hotel;       
-   //display calendar
+
+   private Hotel hotel;   
    private final CalendarPanelJC westPanel;
    private JTextArea textArea = new JTextArea();
 
    private JScrollPane scrollPane = new JScrollPane(textArea); 
+
    ManagerFrame(Hotel h)
    {
       hotel = h;
       final JFrame frame = new JFrame();
       frame.setTitle("MaGeC Hotel Manager Interface");
-      frame.setSize(700,350);
+      frame.setSize(800,350);
 
       //title
       JPanel northPanel = new JPanel();
@@ -35,42 +41,41 @@ public class ManagerFrame extends JFrame
       label.setFont(new Font("Serif", Font.PLAIN, 24));
       northPanel.add(label);
 
-      //display results window
+      //panel to display reservations
       JPanel eastPanel = new JPanel();
       eastPanel.setLayout(new BorderLayout());
       textArea.setEditable(false);
 
+      //always scroll to first line
       DefaultCaret caret = (DefaultCaret) textArea.getCaret();
       caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-      
+
       eastPanel.add(scrollPane, BorderLayout.CENTER);
 
       westPanel = new CalendarPanelJC();
       westPanel.addListener(new ChangeListener(){
-
          public void stateChanged(ChangeEvent e)
          {
+            //view ... model in CalendarPanelJC
             setView();
             repaint();
          }
       });
-      
-      //buttons
+
+      //load button and action
       JPanel bottomPanel = new JPanel();
       JButton loadButton = new JButton("Load");
       loadButton.addActionListener(new ActionListener()
       {
-         //Lihao Ge
          public void actionPerformed(ActionEvent e)
          {
-            //Jie Chen
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
             int result = fileChooser.showOpenDialog(ManagerFrame.this);
             if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                ObjectInputStream in = null;
-                try
+               File selectedFile = fileChooser.getSelectedFile();
+               ObjectInputStream in = null;
+               try
                {
                   in = new ObjectInputStream(new FileInputStream(selectedFile));
                   hotel = (Hotel) in.readObject();
@@ -79,39 +84,36 @@ public class ManagerFrame extends JFrame
                {
                   JOptionPane.showMessageDialog(null, exception + "io");
                }
-                 catch (ClassNotFoundException exception)
+               catch (ClassNotFoundException exception)
                {
-                    JOptionPane.showMessageDialog(null, exception + "class");
+                  JOptionPane.showMessageDialog(null, exception + "class");
                }
             }
          }
       });
+
+      //save/quit button and action
       JButton saveAndQuitButton = new JButton("Save and Quit");
       saveAndQuitButton.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
          {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-            
-            if(fileChooser.showSaveDialog(ManagerFrame.this) == JFileChooser.APPROVE_OPTION)
-            {
-                try
-            {
-               File file = fileChooser.getSelectedFile();
+
+            try{
+               File file = new File("./Reservation.txt");
                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
                out.writeObject(hotel);
                out.close();
                System.exit(0);
             }
-                catch (IOException exception)
+            catch (IOException exception)
             {
-              JOptionPane.showMessageDialog(null, exception + "io exception");
+               JOptionPane.showMessageDialog(null, exception);
             }
-            
+
          }
-            }}
-      );
+      }
+               );
 
       bottomPanel.add(loadButton);
       bottomPanel.add(saveAndQuitButton);
@@ -125,13 +127,14 @@ public class ManagerFrame extends JFrame
       frame.setVisible(true);
    }
 
-   public void setView()
+   private void setView()
    {
       Calendar date = Calendar.getInstance();
       date.set(westPanel.getYY(),  westPanel.getMM(), westPanel.getDD());
 
       SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY");
-      String t = sdf.format(date.getTime()) + "\n\n";
+      String t = "Room Information: for ";
+      t += sdf.format(date.getTime()) + "\n\n";
       ArrayList<Reservation> rlist = hotel.getReservations(date.getTime());
       t += "Booked Rooms:\n";
       for(Reservation r : rlist)

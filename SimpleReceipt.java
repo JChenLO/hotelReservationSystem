@@ -1,7 +1,9 @@
 import java.util.*;
 
 
-
+/**
+ concrete strategy: for print simple receipt
+ */
 
 public class SimpleReceipt implements ReceiptFormatter
 {

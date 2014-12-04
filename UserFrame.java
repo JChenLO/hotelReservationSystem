@@ -7,6 +7,9 @@ import java.util.Random;
 
 import javax.swing.*;
 
+/**
+ GUI for guest, with make reservation and view cancel function
+ */
 public class UserFrame
 {
    private Guest guest;
@@ -14,7 +17,7 @@ public class UserFrame
    private int transactionID;
     UserFrame(Hotel h, Guest g)
     {
-       hotel = h;
+        hotel = h;
         guest = g;
         final Random rand = new Random();
         final JFrame frame = new JFrame();
@@ -24,7 +27,6 @@ public class UserFrame
         //title
         JPanel northPanel = new JPanel();
         JLabel label = new JLabel("Welcome to MaGeC hotel: " + guest.getName());
-  //     northPanel.add(new JSeparator(SwingConstants.HORIZONTAL));
         label.setFont(new Font("Serif", Font.PLAIN, 18));
         northPanel.add(label);   
         

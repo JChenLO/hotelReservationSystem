@@ -14,6 +14,9 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ Make reservation GUI
+ */
 public class ReservationFrame
 {
    private Guest guest;
@@ -56,22 +59,25 @@ public class ReservationFrame
 
       Calendar cal = Calendar.getInstance();
       checkinField = new JTextField(dt.format(cal.getTime()));
+      
+      //controller in MVC
       checkinField.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
          {
-            setAvailableRooms();
+            changeAvailableRooms();
          }
       });
 
       cal.add(Calendar.DATE, 7); 
       checkoutField = new JTextField(dt.format(cal.getTime()));
 
+      //controller in MVC
       checkoutField.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
          {
-            setAvailableRooms();
+            changeAvailableRooms();
          }
       });
 
@@ -87,19 +93,21 @@ public class ReservationFrame
       group.add(ecoButton);
       group.setSelected(luxButton.getModel(), true);
 
+      //controller in MVC
       ecoButton.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
          {
-            setAvailableRooms();
+            changeAvailableRooms();
          }
       });
 
+      //controller in MVC
       luxButton.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
          {
-            setAvailableRooms();
+            changeAvailableRooms();
          }
       });
 
@@ -138,16 +146,15 @@ public class ReservationFrame
       centerPanel.setBorder(lineBorder2);
       centerPanel.setBackground(Color.WHITE);
 
-      //buttons
+      //controller, update roomlist after reservation is made
       JButton confirmButton = new JButton("Confirm");
       confirmButton.addActionListener(new ActionListener()
       {
          public void actionPerformed(ActionEvent e)
          {
-            /*make reservations */
-            
+            /*make reservations */          
             makeReservation();
-            setAvailableRooms();
+            changeAvailableRooms();
          }
       });
       JButton transactionDoneButton = new JButton("Transaction Done");
@@ -160,25 +167,24 @@ public class ReservationFrame
             frame.dispose();
          }
       });
+      
       bottomPanel.add(confirmButton);
       bottomPanel.add(transactionDoneButton);
-
 
       frame.add(northPanel, BorderLayout.NORTH);
       frame.add(centerPanel, BorderLayout.CENTER);
       frame.add(bottomPanel, BorderLayout.SOUTH);
-      setAvailableRooms();
+      changeAvailableRooms();
       frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
       frame.setVisible(true);
    }
 
-   // call Hotel.mutator 
-   private void setAvailableRooms()
+   // call hotel mutator to change available rooms according to date
+   private void changeAvailableRooms()
    {
       if(!isValidDate())return;
       int roomType = luxButton.isSelected() ? 200 : 80;
-      hotel.setAvailableRooms(inDate, outDate, roomType);
-      
+      hotel.changeAvailableRooms(inDate, outDate, roomType); 
    }
 
    private boolean isValidDate()
@@ -223,6 +229,7 @@ public class ReservationFrame
       inDate.add(Calendar.DATE, -60);
       return true;
    }
+   
    private void makeReservation()
    {
       if(!isValidDate())return;

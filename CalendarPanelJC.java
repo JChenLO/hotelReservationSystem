@@ -7,6 +7,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.*;
 
+/**
+  CalendarPanelJC  class contains methods for displaying calendar
+ */
 public class CalendarPanelJC extends JPanel {
    protected int yy;
    protected int mm, dd;
@@ -21,8 +24,10 @@ public class CalendarPanelJC extends JPanel {
    private DefaultTableModel dtm = new DefaultTableModel();
    private JPanel tablePanel = new JPanel();
    private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
-
    private Point point = null;
+   String[] months = { "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December" };
+
    CalendarPanelJC() {
       super();
       setYYMMDD(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
@@ -44,9 +49,6 @@ public class CalendarPanelJC extends JPanel {
       dd = today;
    }
 
-   String[] months = { "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December" };
-
    private void buildGUI() {
       setBorder(BorderFactory.createEtchedBorder());
       setLayout(new BorderLayout());
@@ -62,7 +64,7 @@ public class CalendarPanelJC extends JPanel {
             if (i >= 0) {
                mm = i;
                recompute();
-               setSelectedDay();
+               changeSelectedDay();
             }
          }
       });
@@ -80,7 +82,7 @@ public class CalendarPanelJC extends JPanel {
             if (i >= 0) {
                yy = (int) yearChoice.getSelectedItem();
                recompute();
-               setSelectedDay();
+               changeSelectedDay();
             }
          }
       });
@@ -88,7 +90,7 @@ public class CalendarPanelJC extends JPanel {
       JPanel monthYearPanel = new JPanel();
       monthYearPanel.add(monthChoice);
       monthYearPanel.add(yearChoice);
-     
+
       //calendar panel
       tablePanel.setLayout(new BorderLayout());
       tablePanel.add(monthYearPanel, BorderLayout.NORTH);
@@ -113,13 +115,13 @@ public class CalendarPanelJC extends JPanel {
       dtm.setRowCount(6);
       recompute();
 
-      //model
+      //model mutator
       jtable.addMouseListener(new MouseAdapter()
       {
          public void mouseClicked(MouseEvent e)
          {
             point  = e.getPoint();
-           setSelectedDay();
+            changeSelectedDay();
          }
       });
 
@@ -131,7 +133,7 @@ public class CalendarPanelJC extends JPanel {
 
 
    protected void recompute() {
-      
+
       int numberOfDays, startOfMonth; 
 
       //Clear table
@@ -140,7 +142,7 @@ public class CalendarPanelJC extends JPanel {
             dtm.setValueAt(null, i, j);
          }
       }
-      
+
       //Get first day of month and number of days
       GregorianCalendar cal = new GregorianCalendar(yy, mm, 1);
       numberOfDays = cal.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
@@ -179,23 +181,25 @@ public class CalendarPanelJC extends JPanel {
    {
       listeners.add(c);
    }
-   
-   private void setSelectedDay()
+
+   //notify method
+   private void changeSelectedDay()
    {
       if(point != null){
-      int col = jtable.columnAtPoint(point);
-      int row = jtable.rowAtPoint(point);
-      Object o =  dtm.getValueAt(row, col);  
-      if(o instanceof Integer) 
-      {
-         dd = (int) o;
-         ChangeEvent changeEvent = new ChangeEvent(this);
-         for(ChangeListener c : listeners)
+         int col = jtable.columnAtPoint(point);
+         int row = jtable.rowAtPoint(point);
+         Object o =  dtm.getValueAt(row, col);  
+         if(o instanceof Integer) 
          {
-            c.stateChanged(changeEvent);
+            dd = (int) o;
+            ChangeEvent changeEvent = new ChangeEvent(this);
+            for(ChangeListener c : listeners)
+            {
+               //notify
+               c.stateChanged(changeEvent);
+            }
          }
       }
-      }
    }
-   
+
 }

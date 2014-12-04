@@ -6,6 +6,9 @@ import java.util.*;
 
 import javax.swing.event.*;
 
+/**
+ Class Hotel contains data and method of hotel. 
+ */
 public class Hotel implements Serializable
 {
    public Hotel()
@@ -43,6 +46,9 @@ public class Hotel implements Serializable
       rooms.add(r);
    }
 
+   /** 
+    accessor: get user object by userid
+    */
    public User findUserByID(int id)
    {
       Iterator<User> it = userIterator();
@@ -57,21 +63,18 @@ public class Hotel implements Serializable
       return null;
    }
 
-
+   /**
+    user authentification
+    */
    public boolean authentification(int id, String pin)
    {
-      Iterator<User> it = userIterator();
-
-      while(it.hasNext())
-      {
-         User user = it.next();
-         if(user.getID() == id)return user.getPassword().equals(pin);
-      }
+      User user = findUserByID(id);
+      if (user != null) return user.getPassword().equals(pin);
       return false;
    }
 
    //mutator
-   public void setAvailableRooms(Calendar startDate, Calendar endDate, int roomType)
+   public void changeAvailableRooms(Calendar startDate, Calendar endDate, int roomType)
    {
       Iterator<Room> it = roomIterator();
       availableRooms = new ArrayList<Room>();
@@ -108,11 +111,15 @@ public class Hotel implements Serializable
       {
          Room room = it.next();
          if(room.getRoomNumber() == r.getRoomNumber()) {
-            room.cancelReservation(r); return;
+            room.cancelReservation(r); 
+            return;
          }
       }
    }
    
+   /**
+    method getReservation takes a guest and return all the reservation this guest made
+    */
    public ArrayList<Reservation> getReservations(Guest guest)
    {
       Iterator<Room> it = roomIterator();
@@ -129,6 +136,9 @@ public class Hotel implements Serializable
       return rlist;
    }
 
+   /**
+   method getReservation takes a date and return all the reservation on this date
+   */
    public ArrayList<Reservation> getReservations(Date d)
    {
       Iterator<Room> it = roomIterator();

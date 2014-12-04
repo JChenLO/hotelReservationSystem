@@ -1,6 +1,9 @@
 import java.util.Iterator;
 
-
+/**
+ ComprehensiveReceipt is concrete strategy which print user id, name and all valid reservations made by
+ this user with corresponding total amount due
+ */
 public class ComprehensiveReceipt implements ReceiptFormatter
 {
    private Hotel hotel;

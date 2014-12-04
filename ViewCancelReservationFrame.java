@@ -11,7 +11,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-
+/**
+ GUI for view and cancel reservation
+ */
 public class ViewCancelReservationFrame
 {
    private Guest guest;
